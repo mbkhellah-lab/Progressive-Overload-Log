@@ -194,7 +194,7 @@ var last=getLast(t),prs=0;
 if(last){for(var ei=0;ei<sess.ex.length;ei++){var le=last.ex[ei];if(!le)continue;for(var si=0;si<sess.ex[ei].sets.length;si++){var s=sess.ex[ei].sets[si],ls=le.sets&&le.sets[si];if(s.w&&ls&&ls.w&&parseFloat(s.w)>parseFloat(ls.w))prs++;}}}
 var h=getH(t);h.push(sess);setH(t,h);
 buildEx(t);
-showT(prs>0?‘Saved! ‘+prs+’ PR’+(prs>1?‘s’:’’)+’ this session!’:‘Session saved’);
+showT(prs>0?‘Saved! ‘+prs+’ PR’+(prs>1?‘s’:’’)+’ this session! ’:’Session saved ’);
 renderH(t);
 }
 
