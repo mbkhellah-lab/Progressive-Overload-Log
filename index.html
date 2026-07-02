@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -135,111 +134,110 @@ var WO={
 
 function sGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):[];}catch(e){return[];}}
 function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
-function getH(t){return sGet(‘liftlog6_’+t);}
-function setH(t,d){sSet(‘liftlog6_’+t,d);}
+function getH(t){return sGet('liftlog6_'+t);}
+function setH(t,d){sSet('liftlog6_'+t,d);}
 function getLast(t){var h=getH(t);return h.length?h[h.length-1]:null;}
-function fmtD(d){return new Date(d).toLocaleDateString(‘en-US’,{weekday:‘short’,month:‘short’,day:‘numeric’,year:‘numeric’});}
-function rpeO(){var h=’<option value="">-</option>’;for(var i=1;i<=10;i++)h+=’<option value="'+i+'">’+i+’</option>’;return h;}
+function fmtD(d){return new Date(d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});}
+function rpeO(){var h='<option value="">-</option>';for(var i=1;i<=10;i++)h+='<option value="'+i+'">'+i+'</option>';return h;}
 
 function buildEx(t){
-var wo=WO[t],last=getLast(t),c=document.getElementById(‘ex-’+t);
+var wo=WO[t],last=getLast(t),c=document.getElementById('ex-'+t);
 if(!c)return;
-var html=’’;
+var html='';
 for(var ei=0;ei<wo.ex.length;ei++){
 var ex=wo.ex[ei],le=last?last.ex[ei]:null;
-var pv=’<span style="font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#444">Last</span><br>’;
+var pv='<span style="font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#444">Last</span><br>';
 if(le&&le.sets&&le.sets[0]&&(le.sets[0].w||le.sets[0].r)){
-pv+=’<b>’+(le.sets[0].w||’-’)+‘lb x ‘+(le.sets[0].r||’-’)+’</b>’;
-if(le.sets[0].rpe)pv+=’ <span style="color:#444;font-size:9px">RPE ‘+le.sets[0].rpe+’</span>’;
-}else{pv+=’<span style="color:#444;font-size:10px;font-style:italic">First session</span>’;}
-html+=’<div class="ecard '+wo.cls+'">’;
-html+=’<div class="ehead"><div class="ename">’+ex.n+’</div><div class="eprev">’+pv+’</div></div>’;
-html+=’<div class="setarea"><div class="colrow"><div class="colh"></div><div class="colh">lbs</div><div class="colh">Reps</div><div class="colh">RPE</div><div class="colh">Goal</div></div>’;
+pv+='<b>'+(le.sets[0].w||'-')+'lb x '+(le.sets[0].r||'-')+'</b>';
+if(le.sets[0].rpe)pv+=' <span style="color:#444;font-size:9px">RPE '+le.sets[0].rpe+'</span>';
+}else{pv+='<span style="color:#444;font-size:10px;font-style:italic">First session</span>';}
+html+='<div class="ecard '+wo.cls+'">';
+html+='<div class="ehead"><div class="ename">'+ex.n+'</div><div class="eprev">'+pv+'</div></div>';
+html+='<div class="setarea"><div class="colrow"><div class="colh"></div><div class="colh">lbs</div><div class="colh">Reps</div><div class="colh">RPE</div><div class="colh">Goal</div></div>';
 for(var si=0;si<ex.s;si++){
 var ls=le&&le.sets?le.sets[si]:null;
-var pw=ls&&ls.w?ls.w:’’,pr=ls&&ls.r?ls.r:’’;
-var id=t+’*’+ei+’*’+si;
-html+=’<div class="setrow"><div class="slbl">S’+(si+1)+’</div>’;
-html+=’<input class="inp" type="number" inputmode="decimal" placeholder="'+(pw||'0')+'" id="w_'+id+'">’;
-html+=’<input class="inp" type="number" inputmode="numeric" placeholder="'+(pr||'0')+'" id="r_'+id+'">’;
-html+=’<select class="rpesel" id="rpe_'+id+'" onchange="this.className=\'rpesel\'+(this.value?\' on\':\'\')">’ + rpeO() + ‘</select>’;
-html+=’<div class="tgt">’+ex.t+’</div></div>’;
+var pw=ls&&ls.w?ls.w:'',pr=ls&&ls.r?ls.r:'';
+var id=t+'_'+ei+'_'+si;
+html+='<div class="setrow"><div class="slbl">S'+(si+1)+'</div>';
+html+='<input class="inp" type="number" inputmode="decimal" placeholder="'+(pw||'0')+'" id="w_'+id+'">';
+html+='<input class="inp" type="number" inputmode="numeric" placeholder="'+(pr||'0')+'" id="r_'+id+'">';
+html+='<select class="rpesel" id="rpe_'+id+'" onchange="this.className=\'rpesel\'+(this.value?\' on\':\'\')">' + rpeO() + '</select>';
+html+='<div class="tgt">'+ex.t+'</div></div>';
 }
-html+=’</div><div class="notearea"><textarea class="noteinp" id="note_'+t+'_'+ei+'" placeholder="Notes..."></textarea></div></div>’;
+html+='</div><div class="notearea"><textarea class="noteinp" id="note_'+t+'_'+ei+'" placeholder="Notes..."></textarea></div></div>';
 }
 c.innerHTML=html;
 }
 
 function saveSess(t){
 var wo=WO[t];
-var dp=document.getElementById(‘date-’+t);
-var sd=dp&&dp.value?new Date(dp.value+‘T12:00:00’).toISOString():new Date().toISOString();
+var dp=document.getElementById('date-'+t);
+var sd=dp&&dp.value?new Date(dp.value+'T12:00:00').toISOString():new Date().toISOString();
 var sess={date:sd,ex:[]},has=false;
 for(var ei=0;ei<wo.ex.length;ei++){
-var ed={name:wo.ex[ei].n,sets:[],notes:’’};
+var ed={name:wo.ex[ei].n,sets:[],notes:''};
 for(var si=0;si<wo.ex[ei].s;si++){
-var id=t+’*’+ei+’*’+si;
-var w=document.getElementById(‘w_’+id).value||’’;
-var r=document.getElementById(‘r_’+id).value||’’;
-var rpe=document.getElementById(‘rpe_’+id).value||’’;
+var id=t+'_'+ei+'_'+si;
+var w=document.getElementById('w_'+id).value||'';
+var r=document.getElementById('r_'+id).value||'';
+var rpe=document.getElementById('rpe_'+id).value||'';
 if(w||r)has=true;
 ed.sets.push({w:w,r:r,rpe:rpe});
 }
-var ne=document.getElementById(‘note_’+t+’_’+ei);
-ed.notes=ne?ne.value:’’;
+var ne=document.getElementById('note_'+t+'_'+ei);
+ed.notes=ne?ne.value:'';
 sess.ex.push(ed);
 }
-if(!has){showT(‘Enter at least one set’);return;}
+if(!has){showT('Enter at least one set');return;}
 var last=getLast(t),prs=0;
 if(last){for(var ei=0;ei<sess.ex.length;ei++){var le=last.ex[ei];if(!le)continue;for(var si=0;si<sess.ex[ei].sets.length;si++){var s=sess.ex[ei].sets[si],ls=le.sets&&le.sets[si];if(s.w&&ls&&ls.w&&parseFloat(s.w)>parseFloat(ls.w))prs++;}}}
 var h=getH(t);h.push(sess);setH(t,h);
 buildEx(t);
-showT(prs>0?‘Saved! ‘+prs+’ PR’+(prs>1?‘s’:’’)+’ this session! ’:’Session saved ’);
+showT(prs>0?'Saved! '+prs+' PR'+(prs>1?'s':'')+' this session!':'Session saved');
 renderH(t);
 }
 
 function renderH(t){
-var h=getH(t),c=document.getElementById(‘hist-’+t);
+var h=getH(t),c=document.getElementById('hist-'+t);
 if(!c)return;
-if(!h.length){c.innerHTML=’<div style="text-align:center;color:#444;font-size:11px;padding:20px;font-style:italic">No sessions yet</div>’;return;}
-var html=’’,rev=h.slice().reverse();
+if(!h.length){c.innerHTML='<div style="text-align:center;color:#444;font-size:11px;padding:20px;font-style:italic">No sessions yet</div>';return;}
+var html='',rev=h.slice().reverse();
 for(var hi=0;hi<rev.length;hi++){
 var sess=rev[hi];
-html+=’<div class="hentry"><div class="hdate">’+fmtD(sess.date)+(hi===0?’ <span style="color:#E8728A;font-size:8px">LATEST</span>’:’’)+’</div>’;
+html+='<div class="hentry"><div class="hdate">'+fmtD(sess.date)+(hi===0?' <span style="color:#E8728A;font-size:8px">LATEST</span>':'')+'</div>';
 for(var ei=0;ei<sess.ex.length;ei++){
-var ex=sess.ex[ei],st=’’;
-for(var si=0;si<ex.sets.length;si++){var s=ex.sets[si];if(s.w||s.r){st+=‘S’+(si+1)+’: ‘+(s.w||’-’)+‘lb x ‘+(s.r||’-’);if(s.rpe)st+=’ RPE ‘+s.rpe;st+=’<br>’;}}
-html+=’<div class="hexname">’+ex.name+’</div><div class="hexsets">’+(st||‘No data’)+(ex.notes?’<em style="color:#444">’+ex.notes+’</em>’:’’)+’</div>’;
+var ex=sess.ex[ei],st='';
+for(var si=0;si<ex.sets.length;si++){var s=ex.sets[si];if(s.w||s.r){st+='S'+(si+1)+': '+(s.w||'-')+'lb x '+(s.r||'-');if(s.rpe)st+=' RPE '+s.rpe;st+='<br>';}}
+html+='<div class="hexname">'+ex.name+'</div><div class="hexsets">'+(st||'No data')+(ex.notes?'<em style="color:#444">'+ex.notes+'</em>':'')+'</div>';
 }
-html+=’</div>’;
+html+='</div>';
 }
 c.innerHTML=html;
 }
 
-function togHist(t){var s=document.getElementById(‘hist-’+t);if(s.classList.contains(‘open’)){s.classList.remove(‘open’);}else{renderH(t);s.classList.add(‘open’);}}
+function togHist(t){var s=document.getElementById('hist-'+t);if(s.classList.contains('open')){s.classList.remove('open');}else{renderH(t);s.classList.add('open');}}
 
 function switchTab(t){
-var tabs=document.querySelectorAll(’.tab’);
-for(var i=0;i<tabs.length;i++)tabs[i].classList.remove(‘alh’,‘alv’,‘apl’,‘aps’);
-var secs=document.querySelectorAll(’.ws’);
-for(var i=0;i<secs.length;i++)secs[i].classList.remove(‘show’);
-var m={lh:‘alh’,lv:‘alv’,pl:‘apl’,ps:‘aps’};
-document.getElementById(‘tab-’+t).classList.add(m[t]);
-document.getElementById(‘ws-’+t).classList.add(‘show’);
+var tabs=document.querySelectorAll('.tab');
+for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('alh','alv','apl','aps');
+var secs=document.querySelectorAll('.ws');
+for(var i=0;i<secs.length;i++)secs[i].classList.remove('show');
+var m={lh:'alh',lv:'alv',pl:'apl',ps:'aps'};
+document.getElementById('tab-'+t).classList.add(m[t]);
+document.getElementById('ws-'+t).classList.add('show');
 }
 
-function showT(msg){var el=document.getElementById(‘toast’);el.textContent=msg;el.classList.add(‘show’);setTimeout(function(){el.classList.remove(‘show’);},3000);}
+function showT(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},3000);}
 
 window.onload=function(){
-var today=new Date().toISOString().split(‘T’)[0];
-var types=[‘lh’,‘lv’,‘pl’,‘ps’];
+var today=new Date().toISOString().split('T')[0];
+var types=['lh','lv','pl','ps'];
 for(var i=0;i<types.length;i++){
-var dp=document.getElementById(‘date-’+types[i]);
+var dp=document.getElementById('date-'+types[i]);
 if(dp)dp.value=today;
 buildEx(types[i]);
 }
 };
 </script>
-
 </body>
 </html>
