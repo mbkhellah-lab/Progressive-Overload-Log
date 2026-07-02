@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Lift Log</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:#080808;min-height:100vh;color:#e8e0d5;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;padding-bottom:80px}
+.hdr{padding:50px 20px 18px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.07);background:linear-gradient(180deg,#0c0810,#080808)}
+.hdr-eye{font-size:9px;letter-spacing:5px;color:#E8728A;text-transform:uppercase;margin-bottom:5px}
+.hdr-title{font-size:30px;font-weight:200;letter-spacing:3px;color:#e8e0d5;margin-bottom:5px;font-style:italic}
+.hdr-sub{font-size:9px;letter-spacing:3px;color:#444;text-transform:uppercase}
+.tabs{display:flex;background:#111;border-bottom:1px solid rgba(255,255,255,0.07)}
+.tab{flex:1;padding:13px 4px;text-align:center;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#444;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;line-height:1.6}
+.tab.alh{color:#E8728A;border-bottom-color:#E8728A}
+.tab.alv{color:#82B08A;border-bottom-color:#82B08A}
+.tab.apl{color:#9B8AC4;border-bottom-color:#9B8AC4}
+.tab.aps{color:#C9A96E;border-bottom-color:#C9A96E}
+.content{padding:14px;max-width:480px;margin:0 auto}
+.ws{display:none}.ws.show{display:block}
+.datebar{display:flex;justify-content:space-between;align-items:center;background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;margin-bottom:14px;gap:10px}
+.dlbl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#444;white-space:nowrap}
+.datepick{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:7px;color:#e8e0d5;font-size:12px;font-weight:600;padding:5px 8px;font-family:inherit;-webkit-appearance:none;flex:1}
+.ecard{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.ec-lh{border-top:2px solid #E8728A}.ec-lv{border-top:2px solid #82B08A}.ec-pl{border-top:2px solid #9B8AC4}.ec-ps{border-top:2px solid #C9A96E}
+.ehead{padding:12px 14px 10px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,0.07)}
+.ename{font-size:16px;font-weight:300;font-style:italic;color:#e8e0d5}
+.eprev{font-size:9px;color:#444;text-align:right;line-height:1.8}
+.eprev b{font-style:normal;color:#C9A96E;font-size:10px}
+.setarea{padding:10px 14px 6px}
+.colrow{display:grid;grid-template-columns:26px 1fr 1fr 56px 1fr;gap:5px;margin-bottom:6px}
+.colh{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#444;text-align:center}
+.setrow{display:grid;grid-template-columns:26px 1fr 1fr 56px 1fr;gap:5px;align-items:center;margin-bottom:7px}
+.slbl{font-size:9px;font-weight:700;color:#444;text-align:center;letter-spacing:1px}
+.inp{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:7px;color:#e8e0d5;font-size:15px;font-weight:600;padding:9px 2px;text-align:center;width:100%;-webkit-appearance:none;font-family:inherit}
+.inp:focus{outline:none;background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2)}
+.inp::placeholder{color:#444;font-weight:300;font-size:11px}
+.rpesel{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:7px;color:#444;font-size:12px;padding:9px 0;text-align:center;width:100%;-webkit-appearance:none;font-family:inherit;cursor:pointer}
+.rpesel.on{color:#C9A96E}
+.tgt{background:rgba(255,255,255,0.03);border-radius:6px;font-size:9px;color:#444;text-align:center;padding:9px 2px}
+.notearea{padding:2px 14px 12px}
+.noteinp{width:100%;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:#888;font-size:13px;font-style:italic;padding:8px 10px;resize:none;height:34px;font-family:inherit}
+.noteinp:focus{outline:none;background:rgba(255,255,255,0.05);color:#e8e0d5}
+.noteinp::placeholder{color:#444}
+.savebtn{width:100%;padding:15px;border:none;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;color:#080808;margin-top:6px;font-family:inherit}
+.savebtn:active{opacity:0.8}
+.slh{background:#E8728A}.slv{background:#82B08A}.spl{background:#9B8AC4}.sps{background:#C9A96E}
+.histtoggle{text-align:center;margin-top:20px;margin-bottom:8px}
+.histbtn{background:none;border:1px solid rgba(255,255,255,0.14);border-radius:20px;color:#444;font-size:9px;letter-spacing:2px;padding:7px 20px;cursor:pointer;text-transform:uppercase;font-family:inherit}
+.histsec{display:none;margin-top:10px}.histsec.open{display:block}
+.hentry{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.hdate{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#444;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.hexname{font-size:14px;font-style:italic;font-weight:300;color:#888;margin-bottom:2px}
+.hexsets{font-size:10px;color:#444;margin-bottom:8px;padding-left:6px;line-height:1.9}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);background:#1e1e1e;border:1px solid rgba(255,255,255,0.14);border-radius:24px;padding:10px 22px;font-size:11px;letter-spacing:1px;color:#e8e0d5;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;z-index:999;font-family:inherit}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-eye">Progressive Overload</div>
+  <div class="hdr-title">Lift Log</div>
+  <div class="hdr-sub">Track &middot; Progress &middot; Grow</div>
+</div>
+<div class="tabs">
+  <button class="tab alh" id="tab-lh" onclick="switchTab('lh')">Lower Body<br>Heavy</button>
+  <button class="tab" id="tab-pl" onclick="switchTab('pl')">Upper Body<br>Pull</button>
+  <button class="tab" id="tab-ps" onclick="switchTab('ps')">Upper Body<br>Push</button>
+  <button class="tab" id="tab-lv" onclick="switchTab('lv')">Lower Body<br>Volume</button>
+</div>
+<div class="content">
+  <div class="ws show" id="ws-lh">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-lh"></div>
+    <div id="ex-lh"></div>
+    <button class="savebtn slh" onclick="saveSess('lh')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('lh')">View History</button></div>
+    <div class="histsec" id="hist-lh"></div>
+  </div>
+  <div class="ws" id="ws-pl">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-pl"></div>
+    <div id="ex-pl"></div>
+    <button class="savebtn spl" onclick="saveSess('pl')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('pl')">View History</button></div>
+    <div class="histsec" id="hist-pl"></div>
+  </div>
+  <div class="ws" id="ws-ps">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-ps"></div>
+    <div id="ex-ps"></div>
+    <button class="savebtn sps" onclick="saveSess('ps')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('ps')">View History</button></div>
+    <div class="histsec" id="hist-ps"></div>
+  </div>
+  <div class="ws" id="ws-lv">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-lv"></div>
+    <div id="ex-lv"></div>
+    <button class="savebtn slv" onclick="saveSess('lv')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('lv')">View History</button></div>
+    <div class="histsec" id="hist-lv"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var WO={
+  lh:{cls:'ec-lh',ex:[
+    {n:'Hip Thrusts',s:3,t:'10-12'},
+    {n:'Romanian Deadlifts',s:3,t:'10'},
+    {n:'Single Leg Press',s:3,t:'10/leg'},
+    {n:'Hip Abduction',s:3,t:'12-15'}
+  ]},
+  lv:{cls:'ec-lv',ex:[
+    {n:'Leg Press',s:3,t:'10-12'},
+    {n:'Lying Hamstring Curl',s:3,t:'12-15'},
+    {n:'Back Extensions',s:3,t:'12-15'},
+    {n:'Glute Kickback Machine',s:3,t:'12-15'}
+  ]},
+  pl:{cls:'ec-pl',ex:[
+    {n:'Close Grip Lat Pulldown',s:3,t:'12-15'},
+    {n:'Neutral Grip Cable Row',s:3,t:'12-15'},
+    {n:'Face Pulls',s:3,t:'12-15'},
+    {n:'Reverse Fly',s:3,t:'12-15'},
+    {n:'Alt. DB Hammer Curls',s:3,t:'12-15'}
+  ]},
+  ps:{cls:'ec-ps',ex:[
+    {n:'Cable Tricep Pushdowns',s:3,t:'12-15'},
+    {n:'Overhead Tricep Extension',s:3,t:'12-15'},
+    {n:'DB Shoulder Press',s:3,t:'12-15'},
+    {n:'Incline DB Chest Press',s:3,t:'12-15'},
+    {n:'Around the World',s:3,t:'12-15'}
+  ]}
+};
+
+function sGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):[];}catch(e){return[];}}
+function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function getH(t){return sGet(‘liftlog6_’+t);}
+function setH(t,d){sSet(‘liftlog6_’+t,d);}
+function getLast(t){var h=getH(t);return h.length?h[h.length-1]:null;}
+function fmtD(d){return new Date(d).toLocaleDateString(‘en-US’,{weekday:‘short’,month:‘short’,day:‘numeric’,year:‘numeric’});}
+function rpeO(){var h=’<option value="">-</option>’;for(var i=1;i<=10;i++)h+=’<option value="'+i+'">’+i+’</option>’;return h;}
+
+function buildEx(t){
+var wo=WO[t],last=getLast(t),c=document.getElementById(‘ex-’+t);
+if(!c)return;
+var html=’’;
+for(var ei=0;ei<wo.ex.length;ei++){
+var ex=wo.ex[ei],le=last?last.ex[ei]:null;
+var pv=’<span style="font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#444">Last</span><br>’;
+if(le&&le.sets&&le.sets[0]&&(le.sets[0].w||le.sets[0].r)){
+pv+=’<b>’+(le.sets[0].w||’-’)+‘lb x ‘+(le.sets[0].r||’-’)+’</b>’;
+if(le.sets[0].rpe)pv+=’ <span style="color:#444;font-size:9px">RPE ‘+le.sets[0].rpe+’</span>’;
+}else{pv+=’<span style="color:#444;font-size:10px;font-style:italic">First session</span>’;}
+html+=’<div class="ecard '+wo.cls+'">’;
+html+=’<div class="ehead"><div class="ename">’+ex.n+’</div><div class="eprev">’+pv+’</div></div>’;
+html+=’<div class="setarea"><div class="colrow"><div class="colh"></div><div class="colh">lbs</div><div class="colh">Reps</div><div class="colh">RPE</div><div class="colh">Goal</div></div>’;
+for(var si=0;si<ex.s;si++){
+var ls=le&&le.sets?le.sets[si]:null;
+var pw=ls&&ls.w?ls.w:’’,pr=ls&&ls.r?ls.r:’’;
+var id=t+’*’+ei+’*’+si;
+html+=’<div class="setrow"><div class="slbl">S’+(si+1)+’</div>’;
+html+=’<input class="inp" type="number" inputmode="decimal" placeholder="'+(pw||'0')+'" id="w_'+id+'">’;
+html+=’<input class="inp" type="number" inputmode="numeric" placeholder="'+(pr||'0')+'" id="r_'+id+'">’;
+html+=’<select class="rpesel" id="rpe_'+id+'" onchange="this.className=\'rpesel\'+(this.value?\' on\':\'\')">’ + rpeO() + ‘</select>’;
+html+=’<div class="tgt">’+ex.t+’</div></div>’;
+}
+html+=’</div><div class="notearea"><textarea class="noteinp" id="note_'+t+'_'+ei+'" placeholder="Notes..."></textarea></div></div>’;
+}
+c.innerHTML=html;
+}
+
+function saveSess(t){
+var wo=WO[t];
+var dp=document.getElementById(‘date-’+t);
+var sd=dp&&dp.value?new Date(dp.value+‘T12:00:00’).toISOString():new Date().toISOString();
+var sess={date:sd,ex:[]},has=false;
+for(var ei=0;ei<wo.ex.length;ei++){
+var ed={name:wo.ex[ei].n,sets:[],notes:’’};
+for(var si=0;si<wo.ex[ei].s;si++){
+var id=t+’*’+ei+’*’+si;
+var w=document.getElementById(‘w_’+id).value||’’;
+var r=document.getElementById(‘r_’+id).value||’’;
+var rpe=document.getElementById(‘rpe_’+id).value||’’;
+if(w||r)has=true;
+ed.sets.push({w:w,r:r,rpe:rpe});
+}
+var ne=document.getElementById(‘note_’+t+’_’+ei);
+ed.notes=ne?ne.value:’’;
+sess.ex.push(ed);
+}
+if(!has){showT(‘Enter at least one set’);return;}
+var last=getLast(t),prs=0;
+if(last){for(var ei=0;ei<sess.ex.length;ei++){var le=last.ex[ei];if(!le)continue;for(var si=0;si<sess.ex[ei].sets.length;si++){var s=sess.ex[ei].sets[si],ls=le.sets&&le.sets[si];if(s.w&&ls&&ls.w&&parseFloat(s.w)>parseFloat(ls.w))prs++;}}}
+var h=getH(t);h.push(sess);setH(t,h);
+buildEx(t);
+showT(prs>0?‘Saved! ‘+prs+’ PR’+(prs>1?‘s’:’’)+’ this session!’:‘Session saved’);
+renderH(t);
+}
+
+function renderH(t){
+var h=getH(t),c=document.getElementById(‘hist-’+t);
+if(!c)return;
+if(!h.length){c.innerHTML=’<div style="text-align:center;color:#444;font-size:11px;padding:20px;font-style:italic">No sessions yet</div>’;return;}
+var html=’’,rev=h.slice().reverse();
+for(var hi=0;hi<rev.length;hi++){
+var sess=rev[hi];
+html+=’<div class="hentry"><div class="hdate">’+fmtD(sess.date)+(hi===0?’ <span style="color:#E8728A;font-size:8px">LATEST</span>’:’’)+’</div>’;
+for(var ei=0;ei<sess.ex.length;ei++){
+var ex=sess.ex[ei],st=’’;
+for(var si=0;si<ex.sets.length;si++){var s=ex.sets[si];if(s.w||s.r){st+=‘S’+(si+1)+’: ‘+(s.w||’-’)+‘lb x ‘+(s.r||’-’);if(s.rpe)st+=’ RPE ‘+s.rpe;st+=’<br>’;}}
+html+=’<div class="hexname">’+ex.name+’</div><div class="hexsets">’+(st||‘No data’)+(ex.notes?’<em style="color:#444">’+ex.notes+’</em>’:’’)+’</div>’;
+}
+html+=’</div>’;
+}
+c.innerHTML=html;
+}
+
+function togHist(t){var s=document.getElementById(‘hist-’+t);if(s.classList.contains(‘open’)){s.classList.remove(‘open’);}else{renderH(t);s.classList.add(‘open’);}}
+
+function switchTab(t){
+var tabs=document.querySelectorAll(’.tab’);
+for(var i=0;i<tabs.length;i++)tabs[i].classList.remove(‘alh’,‘alv’,‘apl’,‘aps’);
+var secs=document.querySelectorAll(’.ws’);
+for(var i=0;i<secs.length;i++)secs[i].classList.remove(‘show’);
+var m={lh:‘alh’,lv:‘alv’,pl:‘apl’,ps:‘aps’};
+document.getElementById(‘tab-’+t).classList.add(m[t]);
+document.getElementById(‘ws-’+t).classList.add(‘show’);
+}
+
+function showT(msg){var el=document.getElementById(‘toast’);el.textContent=msg;el.classList.add(‘show’);setTimeout(function(){el.classList.remove(‘show’);},3000);}
+
+window.onload=function(){
+var today=new Date().toISOString().split(‘T’)[0];
+var types=[‘lh’,‘lv’,‘pl’,‘ps’];
+for(var i=0;i<types.length;i++){
+var dp=document.getElementById(‘date-’+types[i]);
+if(dp)dp.value=today;
+buildEx(types[i]);
+}
+};
+</script>
+
+</body>
+</html>
