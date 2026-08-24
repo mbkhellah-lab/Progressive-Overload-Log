@@ -66,86 +66,87 @@ html,body{background:#080808;min-height:100vh;color:#e8e0d5;font-family:-apple-s
   <div class="hdr-sub">Track &middot; Progress &middot; Grow</div>
 </div>
 <div class="tabs">
-  <button class="tab alh" id="tab-lh" onclick="switchTab('lh')">Lower Body<br>Heavy</button>
-  <button class="tab" id="tab-pl" onclick="switchTab('pl')">Upper Body<br>Pull</button>
-  <button class="tab" id="tab-ps" onclick="switchTab('ps')">Upper Body<br>Push</button>
-  <button class="tab" id="tab-lv" onclick="switchTab('lv')">Lower Body<br>Volume</button>
+  <button class="tab alh" id="tab-d1" onclick="switchTab('d1')">Day 1</button>
+  <button class="tab" id="tab-d2" onclick="switchTab('d2')">Day 2</button>
+  <button class="tab" id="tab-d3" onclick="switchTab('d3')">Day 3</button>
 </div>
 <div class="content">
-  <div class="ws show" id="ws-lh">
-    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-lh"></div>
-    <div id="ex-lh"></div>
-    <button class="savebtn slh" onclick="saveSess('lh')">Save Session</button>
-    <div class="histtoggle"><button class="histbtn" onclick="togHist('lh')">View History</button></div>
-    <div class="histsec" id="hist-lh"></div>
+  <div class="ws show" id="ws-d1">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-d1"></div>
+    <div id="ex-d1"></div>
+    <button class="savebtn slh" onclick="saveSess('d1')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('d1')">View History</button></div>
+    <div class="histsec" id="hist-d1"></div>
   </div>
-  <div class="ws" id="ws-pl">
-    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-pl"></div>
-    <div id="ex-pl"></div>
-    <button class="savebtn spl" onclick="saveSess('pl')">Save Session</button>
-    <div class="histtoggle"><button class="histbtn" onclick="togHist('pl')">View History</button></div>
-    <div class="histsec" id="hist-pl"></div>
+  <div class="ws" id="ws-d2">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-d2"></div>
+    <div id="ex-d2"></div>
+    <button class="savebtn slv" onclick="saveSess('d2')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('d2')">View History</button></div>
+    <div class="histsec" id="hist-d2"></div>
   </div>
-  <div class="ws" id="ws-ps">
-    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-ps"></div>
-    <div id="ex-ps"></div>
-    <button class="savebtn sps" onclick="saveSess('ps')">Save Session</button>
-    <div class="histtoggle"><button class="histbtn" onclick="togHist('ps')">View History</button></div>
-    <div class="histsec" id="hist-ps"></div>
-  </div>
-  <div class="ws" id="ws-lv">
-    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-lv"></div>
-    <div id="ex-lv"></div>
-    <button class="savebtn slv" onclick="saveSess('lv')">Save Session</button>
-    <div class="histtoggle"><button class="histbtn" onclick="togHist('lv')">View History</button></div>
-    <div class="histsec" id="hist-lv"></div>
+  <div class="ws" id="ws-d3">
+    <div class="datebar"><span class="dlbl">Session Date</span><input type="date" class="datepick" id="date-d3"></div>
+    <div id="ex-d3"></div>
+    <button class="savebtn spl" onclick="saveSess('d3')">Save Session</button>
+    <div class="histtoggle"><button class="histbtn" onclick="togHist('d3')">View History</button></div>
+    <div class="histsec" id="hist-d3"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 var WO={
-  lh:{cls:'ec-lh',ex:[
+  d1:{cls:'ec-lh',ex:[
     {n:'Hip Thrusts',s:3,t:'10-12'},
     {n:'Romanian Deadlifts',s:3,t:'10'},
-    {n:'Single Leg Press',s:3,t:'10/leg'},
-    {n:'Hip Abduction',s:3,t:'12-15'}
-  ]},
-  lv:{cls:'ec-lv',ex:[
-    {n:'Leg Press',s:3,t:'10-12'},
-    {n:'Lying Hamstring Curl',s:3,t:'12-15'},
-    {n:'Back Extensions',s:3,t:'12-15'},
-    {n:'Glute Kickback Machine',s:3,t:'12-15'}
-  ]},
-  pl:{cls:'ec-pl',ex:[
-    {n:'Close Grip Lat Pulldown',s:3,t:'12-15'},
-    {n:'Neutral Grip Cable Row',s:3,t:'12-15'},
-    {n:'Face Pulls',s:3,t:'12-15'},
-    {n:'Reverse Fly',s:3,t:'12-15'},
-    {n:'Alt. DB Hammer Curls',s:3,t:'12-15'}
-  ]},
-  ps:{cls:'ec-ps',ex:[
-    {n:'Cable Tricep Pushdowns',s:3,t:'12-15'},
-    {n:'Overhead Tricep Extension',s:3,t:'12-15'},
     {n:'DB Shoulder Press',s:3,t:'12-15'},
-    {n:'Incline DB Chest Press',s:3,t:'12-15'},
-    {n:'Around the World',s:3,t:'12-15'}
+    {n:'Incline DB Chest Press',s:3,t:'12-15'}
+  ]},
+  d2:{cls:'ec-lv',ex:[
+    {n:'Single Leg Press',s:3,t:'10/leg'},
+    {n:'Hip Abduction',s:3,t:'12-15'},
+    {n:'Close Grip Lat Pulldown',s:3,t:'12-15'},
+    {n:'Cable Tricep Pushdowns',s:3,t:'12-15'}
+  ]},
+  d3:{cls:'ec-pl',ex:[
+    {n:'Leg Press',s:3,t:'10-12'},
+    {n:'Glute Kickback Machine',s:3,t:'12-15'},
+    {n:'Neutral Grip Cable Row',s:3,t:'12-15'},
+    {n:'Face Pulls',s:3,t:'12-15'}
   ]}
 };
+/* legacy storage keys from the old 4-day split — kept read-only so past sessions still surface */
+var LEGACY_KEYS=['lh','lv','pl','ps'];
+var CURRENT_KEYS=['d1','d2','d3'];
 
 function sGet(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):[];}catch(e){return[];}}
 function sSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function getH(t){return sGet('liftlog6_'+t);}
 function setH(t,d){sSet('liftlog6_'+t,d);}
-function getLast(t){var h=getH(t);return h.length?h[h.length-1]:null;}
+function allKeys(){return LEGACY_KEYS.concat(CURRENT_KEYS);}
+function allSessions(){
+var out=[],ks=allKeys();
+for(var i=0;i<ks.length;i++){var h=sGet('liftlog6_'+ks[i]);for(var j=0;j<h.length;j++)out.push(h[j]);}
+out.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+return out;
+}
+function getLastForName(name){
+var all=allSessions();
+for(var i=all.length-1;i>=0;i--){
+var sess=all[i];
+for(var j=0;j<sess.ex.length;j++){if(sess.ex[j].name===name)return sess.ex[j];}
+}
+return null;
+}
 function fmtD(d){return new Date(d).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});}
 function rpeO(){var h='<option value="">-</option>';for(var i=1;i<=10;i++)h+='<option value="'+i+'">'+i+'</option>';return h;}
 
 function buildEx(t){
-var wo=WO[t],last=getLast(t),c=document.getElementById('ex-'+t);
+var wo=WO[t],c=document.getElementById('ex-'+t);
 if(!c)return;
 var html='';
 for(var ei=0;ei<wo.ex.length;ei++){
-var ex=wo.ex[ei],le=last?last.ex[ei]:null;
+var ex=wo.ex[ei],le=getLastForName(ex.n);
 var pv='<span style="font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#444">Last</span><br>';
 if(le&&le.sets&&le.sets[0]&&(le.sets[0].w||le.sets[0].r)){
 pv+='<b>'+(le.sets[0].w||'-')+'lb x '+(le.sets[0].r||'-')+'</b>';
@@ -189,8 +190,12 @@ ed.notes=ne?ne.value:'';
 sess.ex.push(ed);
 }
 if(!has){showT('Enter at least one set');return;}
-var last=getLast(t),prs=0;
-if(last){for(var ei=0;ei<sess.ex.length;ei++){var le=last.ex[ei];if(!le)continue;for(var si=0;si<sess.ex[ei].sets.length;si++){var s=sess.ex[ei].sets[si],ls=le.sets&&le.sets[si];if(s.w&&ls&&ls.w&&parseFloat(s.w)>parseFloat(ls.w))prs++;}}}
+var prs=0;
+for(var ei=0;ei<sess.ex.length;ei++){
+var le=getLastForName(sess.ex[ei].name);
+if(!le)continue;
+for(var si=0;si<sess.ex[ei].sets.length;si++){var s=sess.ex[ei].sets[si],ls=le.sets&&le.sets[si];if(s.w&&ls&&ls.w&&parseFloat(s.w)>parseFloat(ls.w))prs++;}
+}
 var h=getH(t);h.push(sess);setH(t,h);
 buildEx(t);
 showT(prs>0?'Saved! '+prs+' PR'+(prs>1?'s':'')+' this session!':'Session saved');
@@ -198,20 +203,25 @@ renderH(t);
 }
 
 function renderH(t){
-var h=getH(t),c=document.getElementById('hist-'+t);
+var wo=WO[t],c=document.getElementById('hist-'+t);
 if(!c)return;
-if(!h.length){c.innerHTML='<div style="text-align:center;color:#444;font-size:11px;padding:20px;font-style:italic">No sessions yet</div>';return;}
-var html='',rev=h.slice().reverse();
+var names=[];for(var i=0;i<wo.ex.length;i++)names.push(wo.ex[i].n);
+var rev=allSessions().slice().reverse();
+var html='',shown=0;
 for(var hi=0;hi<rev.length;hi++){
-var sess=rev[hi];
-html+='<div class="hentry"><div class="hdate">'+fmtD(sess.date)+(hi===0?' <span style="color:#E8728A;font-size:8px">LATEST</span>':'')+'</div>';
-for(var ei=0;ei<sess.ex.length;ei++){
-var ex=sess.ex[ei],st='';
+var sess=rev[hi],matches=[];
+for(var ei=0;ei<sess.ex.length;ei++){if(names.indexOf(sess.ex[ei].name)!==-1)matches.push(sess.ex[ei]);}
+if(!matches.length)continue;
+shown++;
+html+='<div class="hentry"><div class="hdate">'+fmtD(sess.date)+(shown===1?' <span style="color:#E8728A;font-size:8px">LATEST</span>':'')+'</div>';
+for(var mi=0;mi<matches.length;mi++){
+var ex=matches[mi],st='';
 for(var si=0;si<ex.sets.length;si++){var s=ex.sets[si];if(s.w||s.r){st+='S'+(si+1)+': '+(s.w||'-')+'lb x '+(s.r||'-');if(s.rpe)st+=' RPE '+s.rpe;st+='<br>';}}
 html+='<div class="hexname">'+ex.name+'</div><div class="hexsets">'+(st||'No data')+(ex.notes?'<em style="color:#444">'+ex.notes+'</em>':'')+'</div>';
 }
 html+='</div>';
 }
+if(!shown){html='<div style="text-align:center;color:#444;font-size:11px;padding:20px;font-style:italic">No sessions yet</div>';}
 c.innerHTML=html;
 }
 
@@ -222,7 +232,7 @@ var tabs=document.querySelectorAll('.tab');
 for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('alh','alv','apl','aps');
 var secs=document.querySelectorAll('.ws');
 for(var i=0;i<secs.length;i++)secs[i].classList.remove('show');
-var m={lh:'alh',lv:'alv',pl:'apl',ps:'aps'};
+var m={d1:'alh',d2:'alv',d3:'apl'};
 document.getElementById('tab-'+t).classList.add(m[t]);
 document.getElementById('ws-'+t).classList.add('show');
 }
@@ -231,7 +241,7 @@ function showT(msg){var el=document.getElementById('toast');el.textContent=msg;e
 
 window.onload=function(){
 var today=new Date().toISOString().split('T')[0];
-var types=['lh','lv','pl','ps'];
+var types=['d1','d2','d3'];
 for(var i=0;i<types.length;i++){
 var dp=document.getElementById('date-'+types[i]);
 if(dp)dp.value=today;
